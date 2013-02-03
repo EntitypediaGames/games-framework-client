@@ -87,6 +87,12 @@ public class GameFrameworkClient extends WordGameClient implements IGameFramewor
     }
 
     @Override
+    public void updatePlayerFacebook(long playerID, String token) {
+        doSimplePost(apiEndpoint + IPlayerAPI.UPDATE_PLAYER_FACEBOOK + "?playerID=" + Long.toString(playerID)
+                + "&token=" + encodeURL(token));
+    }
+
+    @Override
     public ResultsPage<Player> listPlayers(Integer pageSize, Integer pageNo) {
         return doSimpleGet(addPageSizeAndNo(apiEndpoint + IPlayerAPI.LIST_PLAYERS + "?", pageSize, pageNo), PLAYERS_RP_TYPE_REFERENCE);
     }
