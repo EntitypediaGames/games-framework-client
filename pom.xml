@@ -10,16 +10,16 @@
 
     <artifactId>game-framework-client</artifactId>
     <packaging>jar</packaging>
-    <version>1.0.4-SNAPSHOT</version>
+    <version>1.0.4</version>
 
     <name>Entitypedia Games Framework Client</name>
     <description>Entitypedia Games Framework Java Client</description>
     <url>http://games.entitypedia.org/gameframework/</url>
 
     <scm>
-        <connection>scm:svn:https://dev.entitypedia.org/svn/entitypedia/apps/word-games-framework-client/trunk</connection>
-        <developerConnection>scm:svn:https://dev.entitypedia.org/svn/entitypedia/apps/word-games-framework-client/trunk</developerConnection>
-        <url>https://dev.entitypedia.org/svn/entitypedia/apps/word-games-framework-client/</url>
+        <connection>scm:svn:https://dev.entitypedia.org/svn/entitypedia/apps/word-games-framework-client/tags/game-framework-client-1.0.4</connection>
+        <developerConnection>scm:svn:https://dev.entitypedia.org/svn/entitypedia/apps/word-games-framework-client/tags/game-framework-client-1.0.4</developerConnection>
+        <url>https://dev.entitypedia.org/svn/entitypedia/apps/word-games-framework-client/tags/game-framework-client-1.0.4</url>
     </scm>
 
     <repositories>
