@@ -27,6 +27,14 @@ public class GameFrameworkClient extends WordGameClient implements IGameFramewor
         super(SECURE_API_ENDPOINT, uid, password);
     }
 
+    public GameFrameworkClient(String uid, String password, String token, String tokenSecret) {
+        super(DEFAULT_API_ENDPOINT, uid, password, token, tokenSecret);
+    }
+
+    public GameFrameworkClient(String uid, String password, String token, String tokenSecret, Boolean secure) {
+        super(SECURE_API_ENDPOINT, uid, password, token, tokenSecret);
+    }
+
     @Override
     public void login() {
         doEmptyGet(apiEndpoint + IPlayerAPI.LOGIN_PLAYER);
