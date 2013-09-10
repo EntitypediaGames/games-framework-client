@@ -5,7 +5,7 @@
     <parent>
         <groupId>org.entitypedia.games</groupId>
         <artifactId>entitypedia-games-parent</artifactId>
-        <version>7</version>
+        <version>8-SNAPSHOT</version>
     </parent>
 
     <artifactId>game-framework-client</artifactId>
@@ -61,7 +61,7 @@
         <dependency>
             <groupId>${project.groupId}</groupId>
             <artifactId>game-framework-common</artifactId>
-            <version>1.0.5</version>
+            <version>1.0.6-SNAPSHOT</version>
         </dependency>
 
         <!-- jackson JSON dependencies -->
