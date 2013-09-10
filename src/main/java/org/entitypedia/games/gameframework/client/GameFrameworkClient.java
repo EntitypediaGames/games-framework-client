@@ -3,8 +3,12 @@ package org.entitypedia.games.gameframework.client;
 import com.fasterxml.jackson.core.type.TypeReference;
 import org.entitypedia.games.common.client.WordGameClient;
 import org.entitypedia.games.common.model.ResultsPage;
+import org.entitypedia.games.gameframework.common.api.IClueAPI;
 import org.entitypedia.games.gameframework.common.api.IPlayerAPI;
+import org.entitypedia.games.gameframework.common.api.IWordAPI;
+import org.entitypedia.games.gameframework.common.model.Clue;
 import org.entitypedia.games.gameframework.common.model.Player;
+import org.entitypedia.games.gameframework.common.model.Word;
 
 /**
  * @author <a rel="author" href="http://autayeu.com/">Aliaksandr Autayeu</a>
@@ -15,9 +19,18 @@ public class GameFrameworkClient extends WordGameClient implements IGameFramewor
     };
     private static final TypeReference<ResultsPage<Player>> PLAYERS_RP_TYPE_REFERENCE = new TypeReference<ResultsPage<Player>>() {
     };
+    private static final TypeReference<Clue> CLUE_TYPE_REFERENCE = new TypeReference<Clue>() {
+    };
+    private static final TypeReference<Word> WORD_TYPE_REFERENCE = new TypeReference<Word>() {
+    };
+    private static final TypeReference<ResultsPage<Word>> WORDS_RP_TYPE_REFERENCE = new TypeReference<ResultsPage<Word>>() {
+    };
+    private static final TypeReference<ResultsPage<Clue>> CLUES_RP_TYPE_REFERENCE = new TypeReference<ResultsPage<Clue>>() {
+    };
 
     private static final String DEFAULT_API_ENDPOINT = "http://localhost:9632/gameframework/webapi/";
     private static final String SECURE_API_ENDPOINT = "https://localhost:9633/gameframework/webapi/";
+
 
     public GameFrameworkClient(String uid, String password) {
         super(DEFAULT_API_ENDPOINT, uid, password);
@@ -103,5 +116,25 @@ public class GameFrameworkClient extends WordGameClient implements IGameFramewor
     @Override
     public ResultsPage<Player> listPlayers(Integer pageSize, Integer pageNo) {
         return doSimpleGet(addPageSizeAndNo(apiEndpoint + IPlayerAPI.LIST_PLAYERS + "?", pageSize, pageNo), PLAYERS_RP_TYPE_REFERENCE);
+    }
+
+    @Override
+    public Clue readClue(long clueID) {
+        return doSimpleGet(apiEndpoint + IClueAPI.READ_CLUE.replaceAll("\\{.*\\}", Long.toString(clueID)), CLUE_TYPE_REFERENCE);
+    }
+
+    @Override
+    public ResultsPage<Clue> listClues(Integer pageSize, Integer pageNo, String filter, String order) {
+        return doSimpleGet(addPageSizeAndNoAndFilterAndOrder(apiEndpoint + IClueAPI.LIST_CLUES, pageSize, pageNo, encodeURL(filter), order), CLUES_RP_TYPE_REFERENCE);
+    }
+
+    @Override
+    public Word readWord(long wordID) {
+        return doSimpleGet(apiEndpoint + IWordAPI.READ_WORD.replaceAll("\\{.*\\}", Long.toString(wordID)), WORD_TYPE_REFERENCE);
+    }
+
+    @Override
+    public ResultsPage<Word> listWords(Integer pageSize, Integer pageNo, String filter, String order) {
+        return doSimpleGet(addPageSizeAndNoAndFilterAndOrder(apiEndpoint + IWordAPI.LIST_WORDS, pageSize, pageNo, encodeURL(filter), order), WORDS_RP_TYPE_REFERENCE);
     }
 }
