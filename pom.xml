@@ -61,7 +61,7 @@
         <dependency>
             <groupId>${project.groupId}</groupId>
             <artifactId>game-framework-common</artifactId>
-            <version>1.0.7-SNAPSHOT</version>
+            <version>1.0.7</version>
         </dependency>
 
         <!-- jackson JSON dependencies -->
