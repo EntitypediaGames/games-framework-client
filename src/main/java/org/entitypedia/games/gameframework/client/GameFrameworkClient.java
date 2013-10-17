@@ -64,8 +64,8 @@ public class GameFrameworkClient extends WordGameClient implements IGameFramewor
     }
 
     @Override
-    public void sendEmailActivationCode() {
-        doSimplePost(apiEndpoint + IPlayerAPI.SEND_EMAIL_ACTIVATION_CODE);
+    public void requestEmailActivation() {
+        doSimplePost(apiEndpoint + IPlayerAPI.REQUEST_PLAYER_EMAIL_ACTIVATION);
     }
 
     @Override
