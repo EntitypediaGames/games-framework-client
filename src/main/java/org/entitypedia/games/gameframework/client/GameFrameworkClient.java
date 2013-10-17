@@ -69,6 +69,16 @@ public class GameFrameworkClient extends WordGameClient implements IGameFramewor
     }
 
     @Override
+    public void resetPassword(String code, String password) {
+        doSimplePost(apiEndpoint + IPlayerAPI.RESET_PLAYER_PASSWORD + "?code=" + code + "&password=" + encodeURL(password));
+    }
+
+    @Override
+    public void requestPasswordReset(String email) {
+        doSimplePost(apiEndpoint + IPlayerAPI.REQUEST_PLAYER_PASSWORD_RESET + "?email=" + encodeURL(email));
+    }
+
+    @Override
     public Player createPlayer(Player player) {
         return doPostReadObject(apiEndpoint + IPlayerAPI.CREATE_PLAYER, player, PLAYER_TYPE_REFERENCE);
     }
