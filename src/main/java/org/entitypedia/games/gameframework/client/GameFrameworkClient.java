@@ -55,7 +55,12 @@ public class GameFrameworkClient extends WordGameClient implements IGameFramewor
 
     @Override
     public Player loginFacebook(String token) {
-        return doSimpleGet(apiEndpoint + IPlayerAPI.LOGIN_FACEBOOK_PLAYER + "?token=" + token, PLAYER_TYPE_REFERENCE);
+        return doPostRead(apiEndpoint + IPlayerAPI.LOGIN_FACEBOOK_PLAYER + "?token=" + token, PLAYER_TYPE_REFERENCE);
+    }
+
+    @Override
+    public Player loginGPlus(String code) {
+        return doPostRead(apiEndpoint + IPlayerAPI.LOGIN_GPLUS_PLAYER + "?code=" + code, PLAYER_TYPE_REFERENCE);
     }
 
     @Override
@@ -131,6 +136,12 @@ public class GameFrameworkClient extends WordGameClient implements IGameFramewor
     public void updatePlayerFacebook(long playerID, String token) {
         doSimplePost(apiEndpoint + IPlayerAPI.UPDATE_PLAYER_FACEBOOK + "?playerID=" + Long.toString(playerID)
                 + "&token=" + encodeURL(token));
+    }
+
+    @Override
+    public void updatePlayerGPlus(long playerID, String code) {
+        doSimplePost(apiEndpoint + IPlayerAPI.UPDATE_PLAYER_GPLUS + "?playerID=" + Long.toString(playerID)
+                + "&code=" + encodeURL(code));
     }
 
     @Override
