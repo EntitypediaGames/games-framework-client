@@ -14,7 +14,7 @@
 
     <name>Entitypedia Games Framework Client</name>
     <description>Entitypedia Games Framework Java Client</description>
-    <url>http://games.entitypedia.org/gameframework/</url>
+    <url>http://games.entitypedia.org/</url>
 
     <scm>
         <connection>scm:svn:https://dev.entitypedia.org/svn/entitypedia/apps/word-games-framework-client/trunk</connection>
