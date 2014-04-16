@@ -4,9 +4,11 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import org.entitypedia.games.common.client.WordGameClient;
 import org.entitypedia.games.common.model.ResultsPage;
 import org.entitypedia.games.gameframework.common.api.IClueAPI;
+import org.entitypedia.games.gameframework.common.api.IFeedbackAPI;
 import org.entitypedia.games.gameframework.common.api.IPlayerAPI;
 import org.entitypedia.games.gameframework.common.api.IWordAPI;
 import org.entitypedia.games.gameframework.common.model.Clue;
+import org.entitypedia.games.gameframework.common.model.Feedback;
 import org.entitypedia.games.gameframework.common.model.Player;
 import org.entitypedia.games.gameframework.common.model.Word;
 
@@ -26,6 +28,8 @@ public class GameFrameworkClient extends WordGameClient implements IGameFramewor
     private static final TypeReference<ResultsPage<Word>> WORDS_RP_TYPE_REFERENCE = new TypeReference<ResultsPage<Word>>() {
     };
     private static final TypeReference<ResultsPage<Clue>> CLUES_RP_TYPE_REFERENCE = new TypeReference<ResultsPage<Clue>>() {
+    };
+    private static final TypeReference<Feedback> FEEDBACK_TYPE_REFERENCE = new TypeReference<Feedback>() {
     };
 
     private static final String DEFAULT_API_ENDPOINT = "http://localhost:9632/gameframework/webapi/";
@@ -167,5 +171,28 @@ public class GameFrameworkClient extends WordGameClient implements IGameFramewor
     @Override
     public ResultsPage<Word> listWords(Integer pageSize, Integer pageNo, String filter, String order) {
         return doSimpleGet(addPageSizeAndNoAndFilterAndOrder(apiEndpoint + IWordAPI.LIST_WORDS, pageSize, pageNo, encodeURL(filter), order), WORDS_RP_TYPE_REFERENCE);
+    }
+
+    @Override
+    public Feedback createFeedback(long clueID) {
+        return doPostRead(apiEndpoint + IFeedbackAPI.CREATE_FEEDBACK + "?clueID=" + Long.toString(clueID), FEEDBACK_TYPE_REFERENCE);
+    }
+
+    @Override
+    public void postFeedback(long feedbackID, int attributePosition, String attributeValue, String comment) {
+        String url = apiEndpoint + IFeedbackAPI.POST_FEEDBACK + "?feedbackID=" + Long.toString(feedbackID)
+                + "&attributePosition=" + Integer.toString(attributePosition);
+        if (null != attributeValue) {
+            url = url + "&attributeValue=" + encodeURL(attributeValue);
+        }
+        if (null != comment) {
+            url = url + "&comment=" + encodeURL(comment);
+        }
+        doSimplePost(url);
+    }
+
+    @Override
+    public void cancelFeedback(long feedbackID) {
+        doSimplePost(apiEndpoint + IFeedbackAPI.CANCEL_FEEDBACK + "?feedbackID=" + Long.toString(feedbackID));
     }
 }
