@@ -195,4 +195,9 @@ public class GameFrameworkClient extends WordGameClient implements IGameFramewor
     public void cancelFeedback(long feedbackID) {
         doSimplePost(apiEndpoint + IFeedbackAPI.CANCEL_FEEDBACK + "?feedbackID=" + Long.toString(feedbackID));
     }
+
+    @Override
+    public void confirmClue(long clueID, double confidence) {
+        doSimplePost(apiEndpoint + IFeedbackAPI.CONFIRM_CLUE + "?clueID=" + Long.toString(clueID) + "&confidence=" + Double.toString(confidence));
+    }
 }
