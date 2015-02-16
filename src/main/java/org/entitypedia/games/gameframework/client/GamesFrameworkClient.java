@@ -3,14 +3,12 @@ package org.entitypedia.games.gameframework.client;
 import com.fasterxml.jackson.core.type.TypeReference;
 import org.entitypedia.games.common.client.GamesCommonClient;
 import org.entitypedia.games.common.model.ResultsPage;
-import org.entitypedia.games.gameframework.common.api.IClueAPI;
-import org.entitypedia.games.gameframework.common.api.IFeedbackAPI;
-import org.entitypedia.games.gameframework.common.api.IPlayerAPI;
-import org.entitypedia.games.gameframework.common.api.IWordAPI;
-import org.entitypedia.games.gameframework.common.model.Clue;
-import org.entitypedia.games.gameframework.common.model.Feedback;
-import org.entitypedia.games.gameframework.common.model.Player;
-import org.entitypedia.games.gameframework.common.model.Word;
+import org.entitypedia.games.gameframework.common.api.*;
+import org.entitypedia.games.gameframework.common.model.*;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.Properties;
 
 /**
  * @author <a href="http://autayeu.com/">Aliaksandr Autayeu</a>
@@ -31,25 +29,28 @@ public class GamesFrameworkClient extends GamesCommonClient implements IGamesFra
     };
     private static final TypeReference<Feedback> FEEDBACK_TYPE_REFERENCE = new TypeReference<Feedback>() {
     };
+    private static final TypeReference<ClueTemplate> CLUE_TEMPLATE_TYPE_REFERENCE = new TypeReference<ClueTemplate>() {
+    };
+    private static final TypeReference<ResultsPage<ClueTemplate>> CLUE_TEMPLATES_RP_TYPE_REFERENCE = new TypeReference<ResultsPage<ClueTemplate>>() {
+    };
 
-    private static final String DEFAULT_API_ENDPOINT = "http://localhost:9632/gameframework/webapi/";
-    private static final String SECURE_API_ENDPOINT = "https://localhost:9633/gameframework/webapi/";
-
+    private static final String DEFAULT_API_ENDPOINT = "http://games.entitypedia.org/";
+    private static final String SECURE_API_ENDPOINT = "https://games.entitypedia.org/";
 
     public GamesFrameworkClient(String uid, String password) {
-        super(DEFAULT_API_ENDPOINT, uid, password);
+        super(getDefaultAPIEndPoint(), uid, password);
     }
 
     public GamesFrameworkClient(String uid, String password, Boolean secure) {
-        super(SECURE_API_ENDPOINT, uid, password);
+        super(getSecureAPIEndPoint(), uid, password);
     }
 
     public GamesFrameworkClient(String uid, String password, String token, String tokenSecret) {
-        super(DEFAULT_API_ENDPOINT, uid, password, token, tokenSecret);
+        super(getDefaultAPIEndPoint(), uid, password, token, tokenSecret);
     }
 
     public GamesFrameworkClient(String uid, String password, String token, String tokenSecret, Boolean secure) {
-        super(SECURE_API_ENDPOINT, uid, password, token, tokenSecret);
+        super(getSecureAPIEndPoint(), uid, password, token, tokenSecret);
     }
 
     @Override
@@ -199,5 +200,38 @@ public class GamesFrameworkClient extends GamesCommonClient implements IGamesFra
     @Override
     public void confirmClue(long clueID, double confidence) {
         doSimplePost(apiEndpoint + IFeedbackAPI.CONFIRM_CLUE + "?clueID=" + Long.toString(clueID) + "&confidence=" + Double.toString(confidence));
+    }
+
+    @Override
+    public ClueTemplate readClueTemplate(long clueTemplateID) {
+        return doSimpleGet(apiEndpoint + IClueTemplateAPI.READ_CLUE_TEMPLATE.replaceAll("\\{.*\\}", Long.toString(clueTemplateID)), CLUE_TEMPLATE_TYPE_REFERENCE);
+    }
+
+    @Override
+    public ResultsPage<ClueTemplate> listClueTemplates(Integer pageSize, Integer pageNo, String filter, String order) {
+        return doSimpleGet(addPageSizeAndNoAndFilterAndOrder(apiEndpoint + IClueTemplateAPI.LIST_CLUE_TEMPLATES, pageSize, pageNo, encodeURL(filter), order), CLUE_TEMPLATES_RP_TYPE_REFERENCE);
+    }
+
+    private static String getDefaultAPIEndPoint() {
+        return getResourcePropertiesString("gameframework.root", DEFAULT_API_ENDPOINT) + "webapi/";
+    }
+
+    private static String getSecureAPIEndPoint() {
+        return getResourcePropertiesString("gameframework.secure.root", SECURE_API_ENDPOINT) + "webapi/";
+    }
+
+    private static String getResourcePropertiesString(String key, String defaultValue) {
+        InputStream propStream = GamesFrameworkClient.class.getClassLoader().getResourceAsStream("games-framework.properties");
+        String result = defaultValue;
+        if (null != propStream) {
+            Properties props = new Properties();
+            try {
+                props.load(propStream);
+                result = props.getProperty(key);
+            } catch (IOException e) {
+                // nop
+            }
+        }
+        return result;
     }
 }
