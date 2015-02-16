@@ -33,6 +33,10 @@ public class GamesFrameworkClient extends GamesCommonClient implements IGamesFra
     };
     private static final TypeReference<ResultsPage<ClueTemplate>> CLUE_TEMPLATES_RP_TYPE_REFERENCE = new TypeReference<ResultsPage<ClueTemplate>>() {
     };
+    private static final TypeReference<Developer> DEVELOPER_TYPE_REFERENCE = new TypeReference<Developer>() {
+    };
+    private static final TypeReference<ResultsPage<Developer>> DEVELOPERS_RP_TYPE_REFERENCE = new TypeReference<ResultsPage<Developer>>() {
+    };
 
     private static final String DEFAULT_API_ENDPOINT = "http://games.entitypedia.org/";
     private static final String SECURE_API_ENDPOINT = "https://games.entitypedia.org/";
@@ -210,6 +214,55 @@ public class GamesFrameworkClient extends GamesCommonClient implements IGamesFra
     @Override
     public ResultsPage<ClueTemplate> listClueTemplates(Integer pageSize, Integer pageNo, String filter, String order) {
         return doSimpleGet(addPageSizeAndNoAndFilterAndOrder(apiEndpoint + IClueTemplateAPI.LIST_CLUE_TEMPLATES, pageSize, pageNo, encodeURL(filter), order), CLUE_TEMPLATES_RP_TYPE_REFERENCE);
+    }
+
+    @Override
+    public void loginDeveloper() {
+        doEmptyGet(apiEndpoint + IDeveloperAPI.LOGIN_DEVELOPER);
+    }
+
+    @Override
+    public Developer readDeveloper(long developerID) {
+        return doSimpleGet(apiEndpoint + IDeveloperAPI.READ_DEVELOPER.replaceAll("\\{.*\\}", Long.toString(developerID)), DEVELOPER_TYPE_REFERENCE);
+    }
+
+    @Override
+    public void resetDeveloperPassword(String code, String password) {
+        doSimplePost(apiEndpoint + IDeveloperAPI.RESET_DEVELOPER_PASSWORD + "?code=" + code + "&password=" + encodeURL(password));
+    }
+
+    @Override
+    public void requestDeveloperPasswordReset(String email) {
+        doSimplePost(apiEndpoint + IDeveloperAPI.REQUEST_DEVELOPER_PASSWORD_RESET + "?email=" + encodeURL(email));
+    }
+
+    @Override
+    public void updateDeveloperPassword(long developerID, String password) {
+        doSimplePost(apiEndpoint + IDeveloperAPI.UPDATE_DEVELOPER_PASSWORD + "?developerID=" + Long.toString(developerID)
+                + "&password=" + encodeURL(password));
+    }
+
+    @Override
+    public void updateDeveloperEmail(long developerID, String email) {
+        doSimplePost(apiEndpoint + IDeveloperAPI.UPDATE_DEVELOPER_EMAIL + "?developerID=" + Long.toString(developerID)
+                + "&email=" + encodeURL(email));
+    }
+
+    @Override
+    public void updateDeveloperFirstName(long developerID, String firstName) {
+        doSimplePost(apiEndpoint + IDeveloperAPI.UPDATE_DEVELOPER_FIRST_NAME + "?developerID=" + Long.toString(developerID)
+                + "&firstName=" + encodeURL(firstName));
+    }
+
+    @Override
+    public void updateDeveloperLastName(long developerID, String lastName) {
+        doSimplePost(apiEndpoint + IDeveloperAPI.UPDATE_DEVELOPER_LAST_NAME + "?developerID=" + Long.toString(developerID)
+                + "&lastName=" + encodeURL(lastName));
+    }
+
+    @Override
+    public ResultsPage<Developer> listDevelopers(Integer pageSize, Integer pageNo, String filter, String order) {
+        return doSimpleGet(addPageSizeAndNoAndFilterAndOrder(apiEndpoint + IDeveloperAPI.LIST_DEVELOPERS, pageSize, pageNo, encodeURL(filter), order), DEVELOPERS_RP_TYPE_REFERENCE);
     }
 
     private static String getDefaultAPIEndPoint() {
