@@ -6,5 +6,5 @@ import org.entitypedia.games.gameframework.common.api.*;
 /**
  * @author <a href="http://autayeu.com/">Aliaksandr Autayeu</a>
  */
-public interface IGamesFrameworkClient extends IGamesCommonClient, IPlayerAPI, IWordAPI, IClueAPI, IFeedbackAPI, IClueTemplateAPI, IDeveloperAPI {
+public interface IGamesFrameworkClient extends IGamesCommonClient, IPlayerAPI, IWordAPI, IClueAPI, IFeedbackAPI, IClueTemplateAPI, IDeveloperAPI, IGameAPI {
 }

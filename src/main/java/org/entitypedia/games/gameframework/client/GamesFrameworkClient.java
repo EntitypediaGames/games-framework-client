@@ -37,6 +37,10 @@ public class GamesFrameworkClient extends GamesCommonClient implements IGamesFra
     };
     private static final TypeReference<ResultsPage<Developer>> DEVELOPERS_RP_TYPE_REFERENCE = new TypeReference<ResultsPage<Developer>>() {
     };
+    private static final TypeReference<Game> GAME_TYPE_REFERENCE = new TypeReference<Game>() {
+    };
+    private static final TypeReference<ResultsPage<Game>> GAMES_RP_TYPE_REFERENCE = new TypeReference<ResultsPage<Game>>() {
+    };
 
     private static final String DEFAULT_API_ENDPOINT = "http://games.entitypedia.org/";
     private static final String SECURE_API_ENDPOINT = "https://games.entitypedia.org/";
@@ -263,6 +267,74 @@ public class GamesFrameworkClient extends GamesCommonClient implements IGamesFra
     @Override
     public ResultsPage<Developer> listDevelopers(Integer pageSize, Integer pageNo, String filter, String order) {
         return doSimpleGet(addPageSizeAndNoAndFilterAndOrder(apiEndpoint + IDeveloperAPI.LIST_DEVELOPERS, pageSize, pageNo, encodeURL(filter), order), DEVELOPERS_RP_TYPE_REFERENCE);
+    }
+
+    @Override
+    public Game createGame() {
+        return doPostRead(apiEndpoint + IGameAPI.CREATE_GAME, GAME_TYPE_REFERENCE);
+    }
+
+    @Override
+    public Game readGame(long gameID) {
+        return doSimpleGet(apiEndpoint + IGameAPI.READ_GAME.replaceAll("\\{.*\\}", Long.toString(gameID)), GAME_TYPE_REFERENCE);
+    }
+
+    @Override
+    public void updateGameTitle(long gameID, String title) {
+        doSimplePost(apiEndpoint + IGameAPI.UPDATE_GAME_TITLE + "?gameID=" + Long.toString(gameID)
+                + "&title=" + encodeURL(title));
+    }
+
+    @Override
+    public void updateGameDescription(long gameID, String description) {
+        doSimplePost(apiEndpoint + IGameAPI.UPDATE_GAME_DESCRIPTION + "?gameID=" + Long.toString(gameID)
+                + "&description=" + encodeURL(description));
+    }
+
+    @Override
+    public void updateGameURL(long gameID, String url) {
+        doSimplePost(apiEndpoint + IGameAPI.UPDATE_GAME_URL + "?gameID=" + Long.toString(gameID)
+                + "&url=" + encodeURL(url));
+    }
+
+    @Override
+    public void updateGameLogoURL(long gameID, String url) {
+        doSimplePost(apiEndpoint + IGameAPI.UPDATE_GAME_LOGO_URL + "?gameID=" + Long.toString(gameID)
+                + "&url=" + encodeURL(url));
+    }
+
+    @Override
+    public void updateGameSliderURL(long gameID, String url) {
+        doSimplePost(apiEndpoint + IGameAPI.UPDATE_GAME_SLIDER_URL + "?gameID=" + Long.toString(gameID)
+                + "&url=" + encodeURL(url));
+    }
+
+    @Override
+    public void updateGameOAuthCallbackURL(long gameID, String url) {
+        doSimplePost(apiEndpoint + IGameAPI.UPDATE_GAME_OAUTH_CALLBACK_URL + "?gameID=" + Long.toString(gameID)
+                + "&url=" + encodeURL(url));
+    }
+
+    @Override
+    public void updateGameOAuthSecret(long gameID, String secret) {
+        doSimplePost(apiEndpoint + IGameAPI.UPDATE_GAME_OAUTH_SECRET + "?gameID=" + Long.toString(gameID)
+                + "&secret=" + encodeURL(secret));
+    }
+
+    @Override
+    public void updateGameProduction(long gameID, boolean production) {
+        doSimplePost(apiEndpoint + IGameAPI.UPDATE_GAME_PRODUCTION + "?gameID=" + Long.toString(gameID)
+                + "&production=" + Boolean.toString(production));
+    }
+
+    @Override
+    public void deleteGame(long gameID) {
+        doSimplePost(apiEndpoint + IGameAPI.DELETE_GAME + "?gameID=" + Long.toString(gameID));
+    }
+
+    @Override
+    public ResultsPage<Game> listGames(Integer pageSize, Integer pageNo) {
+        return doSimpleGet(addPageSizeAndNo(apiEndpoint + IGameAPI.LIST_GAMES + "?", pageSize, pageNo), GAMES_RP_TYPE_REFERENCE);
     }
 
     private static String getDefaultAPIEndPoint() {
